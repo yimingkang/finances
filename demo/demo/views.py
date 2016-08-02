@@ -26,6 +26,7 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
+        context['navbar'] = 'home'
         return context
 
 
@@ -48,6 +49,12 @@ class FormHorizontalView(FormView):
     template_name = 'demo/form_horizontal.html'
     success_url = '/form_horizontal'
     form_class = ContactForm
+
+    def get_context_data(self, **kwargs):
+        context = super(FormHorizontalView, self).get_context_data(**kwargs)
+        context['navbar'] = 'expense'
+        return context
+
     def form_valid(self, form):
         curdate = strftime("%a %b %d %Y %H:%M:%S", localtime())
         messages.info(self.request, "Added a new expense entry on {time}".format(time=curdate))

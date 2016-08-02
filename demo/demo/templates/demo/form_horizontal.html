@@ -7,17 +7,6 @@
 {% endblock %}
 
 {% block content %}
-		<nav class="navbar navbar-default">
-		  <div class="container-fluid">
-		    <div class="navbar-header">
-		      <a class="navbar-brand" href="#">Welcome</a>
-		    </div>
-		    <ul class="nav navbar-nav">
-		      <li><a href="{% url 'home' %}">Home</a></li>
-		      <li class="active"><a href="{% url 'form_horizontal' %}">Add Expense</a></li>
-		    </ul>
-		  </div>
-		</nav>
 
         <div class="container">
           <form role="form" class="form-horizontal" method="post">
@@ -27,6 +16,5 @@
           </form>
         </div>
 
-    Brought to you by <strong>RK</strong>
 {% endblock %}
 
