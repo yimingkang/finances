@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from .views import HomePageView, FormHorizontalView, FormInlineView, PaginationView, FormWithFilesView, \
-    DefaultFormView, MiscView, DefaultFormsetView, DefaultFormByFieldView
+from .views import HomePageView, FormHorizontalView
 
 urlpatterns = [
     url(r'^$', HomePageView.as_view(), name='home'),
