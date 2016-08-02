@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from time import localtime, strftime
 
 from django.core.files.storage import default_storage
+import json
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.fields.files import FieldFile
@@ -21,6 +21,7 @@ class HomePageView(TemplateView):
         context['navbar'] = 'home'
         context['food_expense'] = [50] * 12
         context['entertainment_expense'] = [20] * 12
+        context['cat'] = json.dumps(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
         return context
 
 
