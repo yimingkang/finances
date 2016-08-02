@@ -19,15 +19,13 @@
 		  </div>
 		</nav>
 
-
-        <form role="form" class="form-horizontal" method="post">
-	        {% csrf_token %}
-	        {% bootstrap_form form layout="horizontal" %}
-	        {% buttons submit='Submit' reset='Clear' layout='horizontal' %}{% endbuttons %}
-    	</form>
-
-    	{% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
-
+        <div class="container">
+          <form role="form" class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form layout="horizontal" %}
+            {% buttons submit='Submit' reset='Clear' layout='horizontal' %}{% endbuttons %}
+          </form>
+        </div>
 
     Brought to you by <strong>RK</strong>
 {% endblock %}
