@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from time import localtime, strftime
+
 from django.core.files.storage import default_storage
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -45,7 +47,12 @@ class DefaultFormByFieldView(FormView):
 
 class FormHorizontalView(FormView):
     template_name = 'demo/form_horizontal.html'
+    success_url = '/form_horizontal'
     form_class = ContactForm
+    def form_valid(self, form):
+        curdate = strftime("%a %b %d %Y %H:%M:%S", localtime())
+        messages.info(self.request, "Added a new expense entry on {time}".format(time=curdate))
+        return super(FormHorizontalView, self).form_valid(form)
 
 
 class FormInlineView(FormView):

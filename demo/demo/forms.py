@@ -72,9 +72,6 @@ class MyTestInput(forms.Form):
 
     def clean(self):
        cleaned_data = super(MyTestInput, self).clean()
-       raise forms.ValidationError(
-            "This error was added to show the non field errors styling."
-       )
        return cleaned_data
 
 
