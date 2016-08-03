@@ -31,15 +31,21 @@ $(function () {
         subtitle: {
             text: ''
         },
-            xAxis: {
-                categories: categories,
-                tickInterval: Math.ceil(tickInterval)
-            },       
+        xAxis: {
+            categories: categories,
+            tickInterval: Math.ceil(tickInterval)
+        },       
             
-            yAxis: {
-            min: 0,
+        yAxis: {
+          	min: 0,
             title: {
-                text: 'Rainfall (mm)'
+                text: 'Spending in USD'
+            	
+        	},
+            labels: {
+                formatter: function () {
+                    return '$' + this.value;
+                }
             }
         },
         tooltip: {
