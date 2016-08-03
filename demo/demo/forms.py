@@ -9,9 +9,9 @@ from django.forms.formsets import BaseFormSet, formset_factory
 from bootstrap3.tests import TestForm
 
 OWNERS = (
-    ('1', 'Shared'),
-    ('2', 'Ryan'),
-    ('3', 'Jessica'),
+    ('Shared', 'Shared'),
+    ('Ryan', 'Ryan'),
+    ('Jessica', 'Jessica'),
 )
 
 EXPENSE_CATEGORIS = (

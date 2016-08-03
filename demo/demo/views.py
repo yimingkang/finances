@@ -11,6 +11,8 @@ from django.views.generic.base import TemplateView
 from django.contrib import messages
 
 from .forms import ContactForm, FilesForm, ContactFormSet
+from .aggregation import *
+from .models import *
 
 
 class HomePageView(TemplateView):
@@ -19,9 +21,12 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
         context['navbar'] = 'home'
-        context['food_expense'] = [50] * 12
-        context['entertainment_expense'] = [20] * 12
-        context['categories'] = json.dumps(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category()
+        context['data_series'] = expense_table
+        context['categories'] = date_table
+
+        # use the # of dates to figure out appropriate tickInterval
+        context['ndates'] = len(date_table) 
         return context
 
 
@@ -37,5 +42,23 @@ class FormHorizontalView(FormView):
 
     def form_valid(self, form):
         curdate = strftime("%a %b %d %Y %H:%M:%S", localtime())
-        messages.success(self.request, "Added a new expense entry on {time}".format(time=curdate))
+        
+        #messages.success(self.request, form.data)
+        data = form.data
+        try:
+            NonRecurringExpense(
+                amount=float(data['amount']),
+                date=datetime.date(
+                    int(data['date_year']),
+                    int(data['date_month']),
+                    int(data['date_day']),
+                ),
+                owner=data['owner'],
+                subject=data['subject'],
+                category=data['category'],
+            ).save()
+            messages.success(self.request, "Added a new {cat} expense entry on {time}".format(cat=data['category'], time=curdate))
+        except Exception as e:
+            messages.error(self.request, "Error entering into database: %s " % e)
+            # TODO: handle error
         return super(FormHorizontalView, self).form_valid(form)
