@@ -35,7 +35,7 @@ EXPENSE_CATEGORIS = (
     )),
 )
 
-class MyTestInput(forms.Form):
+class ExpenseForm(forms.Form):
     """
     Copied straight out of bootstrap3 TestForm.
     """
@@ -71,42 +71,5 @@ class MyTestInput(forms.Form):
     required_css_class = 'bootstrap3-req'                                                                                                                                                                    
 
     def clean(self):
-       cleaned_data = super(MyTestInput, self).clean()
+       cleaned_data = super(ExpenseForm, self).clean()
        return cleaned_data
-
-
-class ContactForm(MyTestInput):
-    pass
-
-
-class ContactBaseFormSet(BaseFormSet):
-    def add_fields(self, form, index):
-        super(ContactBaseFormSet, self).add_fields(form, index)
-
-    def clean(self):
-        super(ContactBaseFormSet, self).clean()
-        raise forms.ValidationError("This error was added to show the non form errors styling")
-
-ContactFormSet = formset_factory(TestForm, formset=ContactBaseFormSet,
-                                 extra=2,
-                                 max_num=4,
-                                 validate_max=True)
-
-
-class FilesForm(forms.Form):
-    text1 = forms.CharField()
-    file1 = forms.FileField()
-    file2 = forms.FileField(required=False)
-    file3 = forms.FileField(widget=forms.ClearableFileInput)
-    file5 = forms.ImageField()
-    file4 = forms.FileField(required=False, widget=forms.ClearableFileInput)
-
-
-class ArticleForm(forms.Form):
-    title = forms.CharField()
-    pub_date = forms.DateField()
-
-    def clean(self):
-        cleaned_data = super(ArticleForm, self).clean()
-        raise forms.ValidationError("This error was added to show the non field errors styling.")
-        return cleaned_data

@@ -10,7 +10,7 @@ from django.views.generic import FormView
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 
-from .forms import ContactForm, FilesForm, ContactFormSet
+from .forms import ExpenseForm 
 from .aggregation import *
 from .models import *
 
@@ -21,7 +21,7 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
         context['navbar'] = 'home'
-        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category()
+        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category(grain='week')
         context['data_series'] = expense_table
         context['categories'] = date_table
 
@@ -33,7 +33,7 @@ class HomePageView(TemplateView):
 class FormHorizontalView(FormView):
     template_name = 'demo/form_horizontal.html'
     success_url = '/form_horizontal'
-    form_class = ContactForm
+    form_class = ExpenseForm 
 
     def get_context_data(self, **kwargs):
         context = super(FormHorizontalView, self).get_context_data(**kwargs)
@@ -45,14 +45,15 @@ class FormHorizontalView(FormView):
         
         #messages.success(self.request, form.data)
         data = form.data
+        expense_date = datetime.date(
+            int(data['date_year']),
+            int(data['date_month']),
+            int(data['date_day']),
+        )
         try:
             NonRecurringExpense(
                 amount=float(data['amount']),
-                date=datetime.date(
-                    int(data['date_year']),
-                    int(data['date_month']),
-                    int(data['date_day']),
-                ),
+                date=expense_date,
                 owner=data['owner'],
                 subject=data['subject'],
                 category=data['category'],
