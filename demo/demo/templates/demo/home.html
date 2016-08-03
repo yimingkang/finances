@@ -14,7 +14,7 @@
 
 <script>
 
-var cat = {{ cat|safe }};
+var categories = {{ categories|safe }};
 
 $(function () {
     $('#container').highcharts({
@@ -28,8 +28,8 @@ $(function () {
             text: ''
         },
             xAxis: {
-                categories: cat
-            },        
+                categories: categories
+            },       
             
             yAxis: {
             min: 0,

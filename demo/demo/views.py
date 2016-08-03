@@ -21,7 +21,7 @@ class HomePageView(TemplateView):
         context['navbar'] = 'home'
         context['food_expense'] = [50] * 12
         context['entertainment_expense'] = [20] * 12
-        context['cat'] = json.dumps(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+        context['categories'] = json.dumps(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
         return context
 
 
