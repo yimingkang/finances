@@ -21,6 +21,7 @@ EXPENSE_CATEGORIS = (
     ('Electronics', 'Electronics'),
     ('Furniture/Appliances', 'Furniture/Appliances'),
     ('Pets', 'Pets'),
+    ('Clothing', 'Clothing'),
     ('Automobile', (
         ('Gas', 'Gas'),
         ('Insurance', 'Insurance'),
@@ -33,6 +34,7 @@ EXPENSE_CATEGORIS = (
         ('PG&E', 'PG&E'),
         ('Comcast', 'Comcast'),
     )),
+    ('Others', 'Others'),
 )
 
 class ExpenseForm(forms.Form):

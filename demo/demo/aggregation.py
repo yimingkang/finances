@@ -9,7 +9,7 @@ class ExpenseAggregator(object):
     COARSE_CATEGORIES = [
             'Restaurant', 'Grocery', 'Entertainment',
             'Electronics', 'Pets', 'Gas', 'Insurance',
-            'Rent', 'PG&E', 'Comcast', 'Others',
+            'Rent', 'PG&E', 'Comcast', 'Others', 'Clothing',
     ]
     def __init__(self):
         pass
