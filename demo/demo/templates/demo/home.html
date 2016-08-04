@@ -10,7 +10,9 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="dailyView" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="monthToDate" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
 
 <script>
 
@@ -18,8 +20,10 @@ var categories = {{ categories|safe }};
 var data_series = {{ data_series|safe }};
 var tickInterval = {{ ndates|safe }} / 10;
 
+var mtd_data = {{ mtd_data|safe }};
+
 $(function () {
-    $('#container').highcharts({
+    $('#dailyView').highcharts({
         chart: {
             type: 'area',
             zoomType: 'x',
@@ -78,6 +82,40 @@ $(function () {
             }
         },
         series: data_series
+    });
+
+    
+    $('#monthToDate').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Total spending this month is $' + "{{ mtd_total }}"
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>${point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.0f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Spending',
+            colorByPoint: true,
+            data: mtd_data
+        }]
     });
 });
 

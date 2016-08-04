@@ -21,12 +21,19 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
         context['navbar'] = 'home'
-        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category(grain='week')
+
+        # render daily view
+        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category(grain='day')
         context['data_series'] = expense_table
         context['categories'] = date_table
 
         # use the # of dates to figure out appropriate tickInterval
         context['ndates'] = len(date_table) 
+
+        # render month to date view
+        mtd_data, mtd_total =  ExpenseAggregator().aggr_month_to_date()
+        context['mtd_data'] = mtd_data
+        context['mtd_total'] = mtd_total
         return context
 
 

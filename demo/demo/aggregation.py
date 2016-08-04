@@ -17,9 +17,19 @@ class ExpenseAggregator(object):
     def daterange(self, start_date, end_date, recent=None):
         if recent:
             # only generate the most recent k days
-            start_date = max(start_date, end_date - datetime.timedelta(recent))
+            start_date = max(start_date, end_date - datetime.timedelta(recent - 1))
         for n in range(int ((end_date - start_date).days) + 1):
             yield start_date + datetime.timedelta(n)
+
+    def aggr_month_to_date(self):
+        today = datetime.date.today()
+        days_since_1st = int((today - datetime.date(today.year, today.month, 1)).days)
+
+        # here + 1 because "1 day since 1st" ==> "2 most recent days"
+        _, expense_table = self.aggr_expense_by_category_day(recent=days_since_1st + 1)
+        map(lambda key: expense_table.pop(key), filter(lambda cat: sum(expense_table[cat]) == 0, expense_table.keys()))
+        total = reduce(lambda x, y: x + sum(expense_table[y]), expense_table.keys(), 0)
+        return ([{'name': cat, 'y': float(sum(expense_table[cat]))} for cat in expense_table.keys()], int(total))
 
     def aggr_formatter(self, date_table, expense_table):
         # format expense table to a list of dicts that highcharts understands
@@ -72,12 +82,11 @@ class ExpenseAggregator(object):
     def aggr_expense_by_category_day(self, recent=None):
         # recent: only the most recent k days
         min_date = datetime.date(2099, 1, 1)
-        max_date = datetime.date(2000, 1, 1)
+        max_date = datetime.date.today()
         expense_date_table = dict()
         for entry in NonRecurringExpense.objects.all():
             # manually grab everything
             min_date = min(min_date, entry.date)
-            max_date = max(max_date, entry.date)
 
             if entry.date not in expense_date_table:
                 expense_date_table[entry.date] = {k: 0 for k in ExpenseAggregator.COARSE_CATEGORIES}
