@@ -1,0 +1,47 @@
+{% extends 'demo/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+   CatCam 
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		<img id="video"></img>
+	</div>
+</div>
+
+<script>
+var client = {
+
+    // Connects to Pi via websocket
+    connect: function (port) {
+        var self = this, video = document.getElementById("video");
+
+        this.socket = new WebSocket("ws://" + window.location.hostname + ":" + port + "/websocket");
+
+        // Request the video stream once connected
+        this.socket.onopen = function () {
+            console.log("Connected!");
+            self.readCamera();
+        };
+
+        // Currently, all returned messages are video data. However, this is
+        // extensible with full-spec JSON-RPC.
+        this.socket.onmessage = function (messageEvent) {
+            video.src = "data:image/jpeg;base64," + messageEvent.data;
+        };
+    },
+
+    // Requests video stream
+    readCamera: function () {
+        this.socket.send("read_camera");
+    }
+};
+
+client.connect(8080);
+</script>
+
+
+{% endblock %}

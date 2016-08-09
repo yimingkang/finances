@@ -36,6 +36,15 @@ class HomePageView(TemplateView):
         context['mtd_total'] = mtd_total
         return context
 
+class CatCamView(TemplateView):
+    template_name = 'demo/cat_cam.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CatCamView, self).get_context_data(**kwargs)
+        context['navbar'] = 'catcam'
+
+        return context
+
 
 class FormHorizontalView(FormView):
     template_name = 'demo/form_horizontal.html'
