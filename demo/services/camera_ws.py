@@ -52,7 +52,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="Starts a webserver that "
 					 "connects to a webcam.")
-	parser.add_argument("--port", type=int, default=8000, help="The "
+	parser.add_argument("--port", type=int, default=8080, help="The "
 			    "port on which to serve the website.")
 	parser.add_argument("--resolution", type=str, default="low", help="The "
 			    "video resolution. Can be high, medium, or low.")
