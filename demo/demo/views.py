@@ -21,7 +21,7 @@ class UploadExpenseFormView(FormView):
     success_url = 'upload_expense_form'
 
     def get_context_data(self, **kwargs):
-        context = super(HomePageView, self).get_context_data(**kwargs)
+        context = super(UploadExpenseFormView, self).get_context_data(**kwargs)
         context['navbar'] = 'upload_expense_form'
 	return context
 
