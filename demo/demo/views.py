@@ -10,10 +10,32 @@ from django.views.generic import FormView
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 
-from .forms import ExpenseForm 
+from .forms import ExpenseForm, UploadExpenseForm
 from .aggregation import *
 from .models import *
+from .adaptor import *
 
+class UploadExpenseFormView(FormView):
+    template_name = 'demo/upload_expense_form.html'
+    form_class = UploadExpenseForm
+    success_url = 'upload_expense_form'
+
+    def form_valid(self, form):
+        adaptor = CSVAdaptor(self.request.FILES['upload_file'], form.data['owner'])
+        curdate = strftime("%a %b %d %Y %H:%M:%S", localtime())
+        adaptor.parse_all()
+        if adaptor.invalid:
+            messages.error("Please check the CSV format, unable to parse file")
+        else:
+            messages.success(
+                self.request,
+                "Upload success (skipped {n} entries)! {t}".format(
+                    t=curdate,
+                    n=len(adaptor.skipped)
+                ),
+            )
+            adaptor.commit()
+        return super(UploadExpenseFormView, self).form_valid(form)
 
 class HomePageView(TemplateView):
     template_name = 'demo/home.html'

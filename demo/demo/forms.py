@@ -37,6 +37,18 @@ EXPENSE_CATEGORIS = (
     ('Others', 'Others'),
 )
 
+class UploadExpenseForm(forms.Form):
+    owner = forms.ChoiceField(
+        required=True,
+        label='Expense Owner',
+        choices=OWNERS, widget=forms.RadioSelect,
+    )
+    upload_file = forms.FileField(
+        required=True,
+        label='Expense File (CSV)',
+        widget=forms.ClearableFileInput,
+    )
+
 class ExpenseForm(forms.Form):
     """
     Copied straight out of bootstrap3 TestForm.
@@ -67,7 +79,7 @@ class ExpenseForm(forms.Form):
     owner = forms.ChoiceField(
         required=True,
         label='Expense Owner',
-        choices=OWNERS, widget=forms.RadioSelect
+        choices=OWNERS, widget=forms.RadioSelect,
     )
 
     required_css_class = 'bootstrap3-req'                                                                                                                                                                    
