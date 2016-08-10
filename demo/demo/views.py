@@ -20,6 +20,11 @@ class UploadExpenseFormView(FormView):
     form_class = UploadExpenseForm
     success_url = 'upload_expense_form'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomePageView, self).get_context_data(**kwargs)
+        context['navbar'] = 'upload_expense_form'
+	return context
+
     def form_valid(self, form):
         adaptor = CSVAdaptor(self.request.FILES['upload_file'], form.data['owner'])
         curdate = strftime("%a %b %d %Y %H:%M:%S", localtime())

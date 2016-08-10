@@ -11,6 +11,7 @@
 		    <ul class="nav navbar-nav">
 		      <li class="{% if navbar == 'home' %}active{% endif %}"><a href="{% url 'home' %}">Home</a></li>
 		      <li class="{% if navbar == 'expense' %}active{% endif %}"><a href="{% url 'form_horizontal' %}">Add Expense</a></li>
+		      <li class="{% if navbar == 'upload_expense_form' %}active{% endif %}"><a href="{% url 'upload_expense_form' %}">Upload Expense</a></li>
 		      <li class="{% if navbar == 'catcam' %}active{% endif %}"><a href="{% url 'cat_cam' %}">Cat Cam</a></li>
 		    </ul>
 		  </div>
