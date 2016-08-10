@@ -1,7 +1,11 @@
 import csv
 import datetime
 import time
+
 from .models import *
+
+from django.db import transaction
+
 
 CATEGORY_TRANSLATION = {
     'Clothing/Shoes': 'Clothing',
@@ -55,5 +59,6 @@ class CSVAdaptor(object):
             except Exception:
                 self.invalid += 1
 
+    @transaction.atomic
     def commit(self):
         map(lambda k: k.save(), self.entries)
