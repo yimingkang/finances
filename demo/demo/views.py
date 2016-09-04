@@ -50,7 +50,7 @@ class HomePageView(TemplateView):
         context['navbar'] = 'home'
 
         # render daily view
-        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category(grain='day')
+        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category(grain='week', recent=31)
         context['data_series'] = expense_table
         context['categories'] = date_table
 
