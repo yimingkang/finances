@@ -19,9 +19,11 @@ EXPENSE_CATEGORIS = (
     ('Grocery', 'Grocery'),
     ('Entertainment', 'Entertainment'),
     ('Electronics', 'Electronics'),
-    ('Furniture/Appliances', 'Furniture/Appliances'),
+    ('Travel', 'Travel'),
+    ('BBT', 'BBT'),
     ('Pets', 'Pets'),
     ('Clothing', 'Clothing'),
+    ('Furniture/Appliances', 'Furniture/Appliances'),
     ('Automobile', (
         ('Gas', 'Gas'),
         ('Insurance', 'Insurance'),

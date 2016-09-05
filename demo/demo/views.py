@@ -23,7 +23,7 @@ class UploadExpenseFormView(FormView):
     def get_context_data(self, **kwargs):
         context = super(UploadExpenseFormView, self).get_context_data(**kwargs)
         context['navbar'] = 'upload_expense_form'
-	return context
+        return context
 
     def form_valid(self, form):
         adaptor = CSVAdaptor(self.request.FILES['upload_file'], form.data['owner'])
@@ -34,9 +34,11 @@ class UploadExpenseFormView(FormView):
         else:
             messages.success(
                 self.request,
-                "Upload success (skipped {n} entries)! {t}".format(
+                "Upload success (accepted {a}, skipped {n} entries, had {b} BBTs)! {t}".format(
+                    a=len(adaptor.entries),
                     t=curdate,
-                    n=len(adaptor.skipped)
+                    b=adaptor.nBBT,
+                    n=len(adaptor.skipped),
                 ),
             )
             adaptor.commit()

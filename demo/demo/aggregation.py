@@ -7,8 +7,8 @@ from django.db.models import Sum
 
 class ExpenseAggregator(object):
     COARSE_CATEGORIES = [
-            'Restaurant', 'Grocery', 'Entertainment',
-            'Electronics', 'Pets', 'Gas', 'Insurance',
+            'Restaurant', 'Grocery', 'Entertainment', "BBT",
+            'Electronics', 'Pets', 'Gas', 'Insurance', "Travel",
             'Rent', 'PG&E', 'Comcast', 'Others', 'Clothing',
     ]
     def __init__(self):
