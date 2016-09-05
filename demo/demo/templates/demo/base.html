@@ -9,7 +9,15 @@
 		      <a class="navbar-brand" href="#">Welcome</a>
 		    </div>
 		    <ul class="nav navbar-nav">
-		      <li class="{% if navbar == 'home' %}active{% endif %}"><a href="{% url 'home' %}">Home</a></li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View Expenses<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="{% url 'home' %}?grain=month">Monthly View</a></li>
+                      <li><a href="{% url 'home' %}?grain=week">Weekly View</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{% url 'home' %}?grain=day">Daily View</a></li>
+                  </ul>
+              </li>
 		      <li class="{% if navbar == 'expense' %}active{% endif %}"><a href="{% url 'form_horizontal' %}">Add Expense</a></li>
 		      <li class="{% if navbar == 'upload_expense_form' %}active{% endif %}"><a href="{% url 'upload_expense_form' %}">Upload Expense</a></li>
 		      <li class="{% if navbar == 'catcam' %}active{% endif %}"><a href="{% url 'cat_cam' %}">Cat Cam</a></li>

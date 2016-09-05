@@ -21,6 +21,7 @@ var data_series = {{ data_series|safe }};
 var tickInterval = {{ ndates|safe }} / 10;
 
 var mtd_data = {{ mtd_data|safe }};
+var graph_title = "{{ graph_title|safe }}";
 
 $(function () {
     $('#dailyView').highcharts({
@@ -30,7 +31,7 @@ $(function () {
 
         },
         title: {
-            text: 'Weekly spending'
+            text: graph_title
         },
         subtitle: {
             text: ''

@@ -1,8 +1,9 @@
 import datetime
 import calendar
-from .models import *
 
 from django.db.models import Sum
+
+from .models import *
 
 
 class ExpenseAggregator(object):
@@ -21,6 +22,15 @@ class ExpenseAggregator(object):
         for n in range(int ((end_date - start_date).days) + 1):
             yield start_date + datetime.timedelta(n)
 
+    def daterange_month(self, start_date, end_date=datetime.date(2999, 1, 1)):
+        end_date = min(end_date, self.daterange_get_next_month(start_date) - datetime.timedelta(1))
+        return self.daterange(start_date, end_date)
+
+    def daterange_get_next_month(self, start_date):
+        next_month = (start_date.month + 1) % 13 or 1
+        next_year = start_date.year + start_date.month / 12
+        return datetime.date(next_year, next_month, 1)
+
     def aggr_month_to_date(self):
         today = datetime.date.today()
         days_since_1st = int((today - datetime.date(today.year, today.month, 1)).days)
@@ -37,12 +47,12 @@ class ExpenseAggregator(object):
 
     def aggr_expense_by_category(self, grain='day', recent=None):
         dates, expenses = self.aggr_expense_by_category_day(recent)
-        if grain is 'day' or len(dates) == 0:
-            return self.aggr_formatter(dates, expenses)
-        elif grain is 'week':
-            start_date = dates[0]
-            end_date = dates[-1]
+        start_date = dates[0]
+        end_date = dates[-1]
 
+        if grain == 'day' or len(dates) == 0:
+            return self.aggr_formatter(dates, expenses)
+        elif grain == 'week':
             # figure out the day (monday=0)
             weekday_offset = start_date.weekday()
 
@@ -69,12 +79,21 @@ class ExpenseAggregator(object):
                 index += 1
             return self.aggr_formatter(new_dates, new_expenses)
     
-        elif grain is 'month':
-            # lets aggregate this motherfucka
-            raise ValueError("UNIMPLEMENTED")
-        elif grain is 'year':
-            # lets aggregate this motherfucka
-            raise ValueError("UNIMPLEMENTED")
+        elif grain == 'month':
+            new_dates = [datetime.date(start_date.year, start_date.month, 1)]
+            new_expenses = {k: [0]  for k in ExpenseAggregator.COARSE_CATEGORIES}
+            index = 0
+            while start_date <= end_date:
+                for date in self.daterange_month(start_date, end_date):
+                    for cat in ExpenseAggregator.COARSE_CATEGORIES:
+                        new_expenses[cat][-1] += expenses[cat][index]
+                    index += 1
+                start_date = self.daterange_get_next_month(start_date)
+                if start_date <= end_date:
+                    new_dates.append(start_date)    
+                    map(lambda cat: new_expenses[cat].append(0), ExpenseAggregator.COARSE_CATEGORIES)
+            return self.aggr_formatter(new_dates, new_expenses)
+           
         else:
             # lets aggregate this motherfucka
             raise ValueError("Not a valid granularity: %s" % grain)

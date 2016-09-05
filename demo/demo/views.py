@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from time import localtime, strftime
+import json
 
 from django.core.files.storage import default_storage
-import json
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.fields.files import FieldFile
@@ -14,6 +14,7 @@ from .forms import ExpenseForm, UploadExpenseForm
 from .aggregation import *
 from .models import *
 from .adaptor import *
+
 
 class UploadExpenseFormView(FormView):
     template_name = 'demo/upload_expense_form.html'
@@ -47,12 +48,20 @@ class UploadExpenseFormView(FormView):
 class HomePageView(TemplateView):
     template_name = 'demo/home.html'
 
+    ADJ_CONVERTER = {
+        'day': 'Daily',
+        'week': 'Weekly',
+        'month': 'Monthly',
+    }
+
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
+        grain = self.request.GET.get('grain', 'week')
         context['navbar'] = 'home'
+        context['graph_title'] = HomePageView.ADJ_CONVERTER[grain] + " spending"
 
         # render daily view
-        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category(grain='week', recent=31)
+        date_table, expense_table = ExpenseAggregator().aggr_expense_by_category(grain=grain)
         context['data_series'] = expense_table
         context['categories'] = date_table
 
